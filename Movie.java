@@ -7,6 +7,11 @@ public class Movie {
     private String title;
 
     // Constructor
+    public Movie (int year) {
+        // For easier testing
+        this("", year, 120, 4.5, "Hello World");
+    }
+
     public Movie (String genre, int year, int runtime, double rating, String title) {
         this.genre = genre;
         this.year = year;
@@ -62,6 +67,10 @@ public class Movie {
     }
 
     public String getRuntimeString () {
-        return "%dh %dm".formatted(this.runtime / 60, this.runtime % 60);
+        if (this.runtime % 60 == 0) {
+            return "%dh".formatted(this.runtime / 60);
+        } else {
+            return "%dh %dm".formatted(this.runtime / 60, this.runtime % 60);
+        }
     }
 }

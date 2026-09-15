@@ -16,7 +16,7 @@ public class Roulette {
         }
         else {
             for(int i = 0; i < x; i ++){
-                j = (int)(Math.random() * editList.length);
+                j = (int)(Math.random() * editList.size());
                 list2.add(list[j]);
                 editList.remove(j);
             }
