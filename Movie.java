@@ -63,7 +63,7 @@ public class Movie {
 
     // Other
     public String toString () {
-        return "%s (%d, %s) %f★".formatted(this.title, this.year, this.getRuntimeString(), this.rating);
+        return "%s (%d, %s) %.1f★".formatted(this.title, this.year, this.getRuntimeString(), this.rating);
     }
 
     public String getRuntimeString () {
