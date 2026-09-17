@@ -1,3 +1,8 @@
+/*
+* MovieRoulette.java
+* Authors: Keniel, Reg, AB, Naphtali
+*/
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +12,7 @@ public class MovieRoulette {
         // Declare vars
         int numPeople = 0;
         int mode = 0;
-        ArrayList<Movie> catalogue = new ArrayList<>(List.of(
+        ArrayList<Movie> catalogue = new ArrayList<>(List.of( // Parodies to avoid copyright
             new Movie("Yacht", "romance", 1997, 3.8, 194),
             new Movie("Ugly and the Small", "romance", 2003, 2.0, 73),
             new Movie("Romeo and Julio", "romance", 2025, 2.3, 82),
@@ -33,8 +38,9 @@ public class MovieRoulette {
         while (numPeople <= 0 || numPeople > 8) {
             System.out.print("How many people are in your party (max of 8)?\n> ");
             // If the user entered an int, all cool. Else, ignore
-            numPeople = (input.hasNextInt()) ? input.nextInt() : -475267;
-            if (numPeople == -475267) {
+            if (input.hasNextInt()) {
+                numPeople = input.nextInt();
+            } else {
                 input.next();
             }
         }
@@ -42,8 +48,9 @@ public class MovieRoulette {
         // First crossroads
         while (!(mode == 1 || mode == 2)) {
             System.out.print("\nWould you prefer Roulette mode (1) or Questionnaire mode(2)?\n> ");
-            mode = (input.hasNextInt()) ? input.nextInt() : -475267;
-            if (mode == -475267) {
+            if (input.hasNextInt()) { // Simple input validation
+                mode = input.nextInt();
+            } else {
                 input.next();
             }
         }
@@ -60,8 +67,8 @@ public class MovieRoulette {
             input.nextLine();
             for (int i = 0; i < numPeople; i++) {
                 boolean isValidGenre = false;
-                while (!isValidGenre) {
-                    System.out.print("\nPerson %d: What genre do you want to watch (out of sci-fi, romance, comedy, fantasy, and horror)?\n> ".formatted(i + 1));
+                while (!isValidGenre) { // as long as they don't enter a valid genre, it repeats.
+                    System.out.print("\nPerson %d, What genre do you want to watch (out of sci-fi, romance, comedy, fantasy, and horror)?\n> ".formatted(i + 1));
                     String userGenre = input.nextLine();
                     for (int j = 0; j < validGenres.length; j++) {
                         if (userGenre.toLowerCase().equals(validGenres[j])) {isValidGenre = true;}
@@ -75,20 +82,20 @@ public class MovieRoulette {
             String mostCommon = "";
             String tiedCommon = "";
             int count = 0;
-            for (int i = 0; i < genres.length; i++) {
+            for (int i = 0; i < genres.length; i++) { // loops through the list
                 int tempCount = 0;
                 if (!genres[i].equals(mostCommon)) {
-                    for (int j = 0; j < genres.length; j++) {
+                    for (int j = 0; j < genres.length; j++) { // compares the item to each other item, itself included (only 1 occurence -> tempCount of 1)
                         //System.out.println(i + " " + j + " " + genres[i] + " " + genres[j]);
                         if (genres[i].equals(genres[j])) {
                             tempCount++;
                         }
                     }
-                    if (tempCount > count) {
+                    if (tempCount > count) { // if the current item is more common
                         mostCommon = genres[i];
                         tiedCommon = "";
                         count = tempCount;
-                    } else if (tempCount == count) {
+                    } else if (tempCount == count) { // oh its tied? neat
                         tiedCommon = genres[i];
                     }
                 } else {
@@ -120,18 +127,20 @@ public class MovieRoulette {
             // Next Crossroads (user input)
             // Display movies
             System.out.print("\nThe current list of movies is ");
-            for (int i = 0; i < catalogue.size(); i++) {
-                System.out.print(catalogue.get(i));
-                if (i < catalogue.size() - 1 && catalogue.size() > 2) {System.out.print(", ");}
-                if (catalogue.size() == 2 && i == 0) {System.out.print(" ");}
-                if (i == catalogue.size() - 2) {System.out.print("and ");}
-            }
+            for (int i = 0; i < catalogue.size(); i++) { // This is a lot. Effectively it just formats the list of movies into a pretty string.
+                System.out.print(catalogue.get(i)); // The movie
+                if (i < catalogue.size() - 1 && catalogue.size() > 2) {System.out.print(", ");} // If it's in the list and not the last item (first*, *second*, *and last.)
+                if (catalogue.size() == 2 && i == 0) {System.out.print(" ");} // if only two items, no need for a comma (first* *and last.)
+                if (i == catalogue.size() - 2) {System.out.print("and ");} // if the second to last item, say and (first, second to last, *and *last.)
+                if (i == catalogue.size() - 1) {System.out.println(".");} // put a period at the end (first, second, and last.)
+            } // Basically identical at the end of the program. in getRandomMovies(), there is no period because its in the middle of the sentence.
 
             mode = 0;
             while (!(mode == 1 || mode == 2 || mode == 3)) {
                 System.out.print("\nWould you like to enter Roulette mode (1), continue the Questionnaire (2), or close the program (3)?\n> ");
-                mode = (input.hasNextInt()) ? input.nextInt() : -475267;
-                if (mode == -475267) {
+                if (input.hasNextInt()) { // More input validation
+                    mode = input.nextInt();
+                } else {
                     input.next();
                 }
             }
@@ -147,9 +156,9 @@ public class MovieRoulette {
                 for (int i = 0; i < numPeople; i++) {
                     boolean isValidRating = false;
                     while (!isValidRating) {
-                        System.out.print("Person %d: What do you want the movie to be rated (out of high, average, and low)?\n> ".formatted(i + 1));
+                        System.out.print("\nPerson %d, what do you want the movie to be rated (out of high, average, and low)?\n> ".formatted(i + 1));
                         String userRating = input.nextLine();
-                        for (int j = 0; j < validRatings.length; j++) {
+                        for (int j = 0; j < validRatings.length; j++) { // Making sure the user entered a valid rating. and yes, it is a string representing a range, not a number.
                             if (userRating.toLowerCase().equals(validRatings[j])) {isValidRating = true;}
                         }
                         if (isValidRating) {ratings[i] = userRating;}
@@ -159,12 +168,12 @@ public class MovieRoulette {
                 // Find the most common rating
                 mostCommon = "";
                 tiedCommon = "";
-                count = 0;
+                count = 0; // same as with genres but some different names
                 for (int i = 0; i < ratings.length; i++) {
                     int tempCount = 0;
                     if (!ratings[i].equals(mostCommon)) {
                         for (int j = 0; j < ratings.length; j++) {
-                            if (ratings[i] == ratings[j]) {
+                            if (ratings[i].equals(ratings[j])) {
                                 tempCount++;
                             }
                         }
@@ -180,67 +189,72 @@ public class MovieRoulette {
                     }
                 }
 
+                System.out.println(mostCommon + " " + tiedCommon);
                 // Filter by rating
                 tempCatalogue = new ArrayList<>();
                 if (!tiedCommon.equals("")) { // Only will be true if there were two most common ratings
                     // If this section of code is run, the count variable will be the same for both ratings.
+                    // Since you're probably too lazy to read the whole condition, here's what it says in a nutshell.
+                    // "high" -> 3.75 to 5.0 stars; "average" -> 2.25 to 3.75 stars; "low" -> 1.0 to 2.25 stars
+                    for (int i = 0; i < catalogue.size(); i++) {
+                        if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
+                            tempCatalogue.add(catalogue.get(i));
+                        }
+                        if ((tiedCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (tiedCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (tiedCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
+                            tempCatalogue.add(catalogue.get(i));
+                        }
+                    }
+                    catalogue = tempCatalogue;
+                } else { // Only ran if there is only one most common rating
+                    // Code for filtering by one rating
                     for (int i = 0; i < catalogue.size(); i++) {
                         if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
                             tempCatalogue.add(catalogue.get(i));
                         }
                     }
                     catalogue = tempCatalogue;
-                } else { // Only ran if there is only one most common genre
-                    // Code for filtering by one genre
+                }
+
+                if (catalogue.size() == 1) { // Output the final list of movies. v Singular
+                    System.out.println("The movie you have selected is " + catalogue.get(0) + ".");
+                } else { // v Plural
+                    System.out.print("\nThe movies you have selected are ");
                     for (int i = 0; i < catalogue.size(); i++) {
-                        if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
-                            tempCatalogue.add(catalogue.get(i));
-                        }
+                        System.out.print(catalogue.get(i));
+                        if (i < catalogue.size() - 1 && catalogue.size() > 2) {System.out.print(", ");}
+                        if (catalogue.size() == 2 && i == 0) {System.out.print(" ");}
+                        if (i == catalogue.size() - 2) {System.out.print("and ");}
+                        if (i == catalogue.size() - 1) {System.out.println(".");}
                     }
-                    catalogue = tempCatalogue;
                 }
+            } // Note that this ends the else if (mode == 2) after the genres have been collected.
+        } // There is no else because the code for exiting the program happens once the conditions are done working.
 
-                // Final section.
-                // Display list
-                System.out.print("\nThe current list of movies is ");
-                for (int i = 0; i < catalogue.size(); i++) {
-                    System.out.print(catalogue.get(i));
-                    if (i < catalogue.size() - 1 && catalogue.size() > 2) {System.out.print(", ");}
-                    if (catalogue.size() == 2 && i == 0) {System.out.print(" ");}
-                    if (i == catalogue.size() - 2) {System.out.print("and ");}
-                }
-
-                // Final input
-                System.out.print("Do you want to randomly narrow the list (y/n)?\n> ");
-                if (Character.toLowerCase(input.next().charAt(0)) == 'y') {
-                    getRandomMovies(catalogue);
-                }
-            }
-        }
-
-        input.close();
+        input.close(); // Exit the program
         System.out.println("Enjoy your movie!");
     }
 
     public static void getRandomMovies (ArrayList<Movie> list) {
+        // This sends nothing back because after executing the program exits because there is no code afterward.
         Scanner input = new Scanner(System.in);
         int movieCount = 0;
 
         while (movieCount <= 0) {
             System.out.print("\nHow many movies do you want to pick?\n> ");
-            movieCount = (input.hasNextInt()) ? input.nextInt() : -475267;
-            if (movieCount == -475267) {
+            if (input.hasNextInt()) {
+                movieCount = input.nextInt();
+            } else { // wow i love input validation
                 input.next();
             }
         }
 
-        input.close();
+        input.close(); // we're done with this Scanner.
 
-        if (movieCount == 1) {
+        if (movieCount == 1) { // Display the output
             System.out.println("\n" + Roulette.chooseOne(list) + " has been chosen.");
         } else {
             Movie[] out = Roulette.chooseX(list, movieCount);
-            // Very much output formatting
+            // Very much output formatting. explained in detail above.
             System.out.println();
             for (int i = 0; i < out.length; i++) {
                 System.out.print(out[i]);
@@ -248,7 +262,7 @@ public class MovieRoulette {
                 if (out.length == 2 && i == 0) {System.out.print(" ");}
                 if (i == out.length - 2) {System.out.print("and ");}
             }
-            System.out.println(" have been chosen.");
+            System.out.println(" have been chosen."); // This is the reason there is no fourth if () {} for a period afterwards.
         }
     }
 }

@@ -1,10 +1,15 @@
+/*
+* Movie.java
+* Author: Naphtali
+*/
+
 public class Movie {
     // Attributes
+    private String title;
     private String genre;
     private int year;
-    private int runtime;
     private double rating;
-    private String title;
+    private int runtime;
 
     // Constructor
     public Movie (int year) {
