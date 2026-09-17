@@ -7,11 +7,27 @@ public class MovieRoulette {
         // Declare vars
         int numPeople = 0;
         int mode = 0;
-        ArrayList<Movie> catalogue = new ArrayList<>(List.of(new Movie(2025), new Movie(2026), new Movie(2027)));
+        ArrayList<Movie> catalogue = new ArrayList<>(List.of(
+            new Movie("Yacht", "romance", 1997, 3.8, 194),
+            new Movie("Ugly and the Small", "romance", 2003, 2.0, 73),
+            new Movie("Romeo and Julio", "romance", 2025, 2.3, 82),
+            new Movie("Star Warriors", "sci-fi", 1977, 3.4, 98),
+            new Movie("Project Fail Harry", "sci-fi", 2026, 2.0, 132),
+            new Movie("The Array", "sci-fi", 2015, 4.3, 113),
+            new Movie("Caves and Lizards", "fantasy", 2023, 2.2, 128),
+            new Movie("Hairy the Potman", "fantasy", 2001, 3.5, 152),
+            new Movie("The Avenged", "fantasy", 2013, 4.2, 90),
+            new Movie("Shout", "horror", 1996, 2.1, 87),
+            new Movie("Dream before Easter", "horror", 2008, 4.0, 109),
+            new Movie("Monday", "horror", 2022, 3.3, 137),
+            new Movie("Green Guy", "comedy", 2001, 3.6, 124),
+            new Movie("Mr. Montanus and the Holy Quail", "comedy", 1976, 4.9, 121),
+            new Movie("Livepool", "comedy", 2016, 1.3, 142)
+        ));
         Scanner input = new Scanner(System.in);
 
         // Welcome
-        System.out.println("Welcome, Confused Party of Movie Watchers!\n");
+        System.out.println("Welcome, Confused Party of Movie Watchers!");
 
         // Get number of people in the group
         while (numPeople <= 0) {
@@ -25,7 +41,7 @@ public class MovieRoulette {
 
         // First crossroads
         while (!(mode == 1 || mode == 2)) {
-            System.out.print("Would you prefer Roulette mode (1) or Questionnaire mode(2)?\n> ");
+            System.out.print("\nWould you prefer Roulette mode (1) or Questionnaire mode(2)?\n> ");
             mode = (input.hasNextInt()) ? input.nextInt() : -475267;
             if (mode == -475267) {
                 input.next();
@@ -44,7 +60,7 @@ public class MovieRoulette {
             input.nextLine();
             for (int i = 0; i < numPeople; i++) {
                 boolean isValidGenre = false;
-                System.out.print("Person %d: What genre do you want to watch?\n> ".formatted(i + 1));
+                System.out.print("\nPerson %d: What genre do you want to watch?\n> ".formatted(i + 1));
                 String userGenre = input.nextLine();
                 for (int j = 0; j < validGenres.length; j++) {
                     if (userGenre.toLowerCase() == validGenres[j]) {isValidGenre = true;}
@@ -97,9 +113,18 @@ public class MovieRoulette {
             }
 
             // Next Crossroads (user input)
+            // Display movies
+            System.out.print("\nThe current list of movies is ");
+            for (int i = 0; i < catalogue.size(); i++) {
+                System.out.print(catalogue.get(i));
+                if (i < catalogue.size() - 1 && catalogue.size() > 2) {System.out.print(", ");}
+                if (catalogue.size() == 2 && i == 0) {System.out.print(" ");}
+                if (i == catalogue.size() - 2) {System.out.print("and ");}
+            }
+
             mode = 0;
             while (!(mode == 1 || mode == 2 || mode == 3)) {
-                System.out.print("Would you like to enter Roulette mode (1), continue the Questionnaire (2), or close the program (3)?\n> ");
+                System.out.print("\nWould you like to enter Roulette mode (1), continue the Questionnaire (2), or close the program (3)?\n> ");
                 mode = (input.hasNextInt()) ? input.nextInt() : -475267;
                 if (mode == -475267) {
                     input.next();
@@ -111,7 +136,7 @@ public class MovieRoulette {
             } else if (mode == 2) {
                 // Collect the list of ratings
                 String[] ratings = new String[numPeople];
-                String[] validRatings = {"high", "low"};
+                String[] validRatings = {"high", "average", "low"};
 
                 input.nextLine();
                 for (int i = 0; i < numPeople; i++) {
@@ -151,20 +176,36 @@ public class MovieRoulette {
                 // Filter by rating
                 tempCatalogue = new ArrayList<>();
                 if (tiedCommon.equals("")) { // Only will be true if there was a most common rating.
-                    // Code for filtering by one genre
+                    // Code for filtering by one rating
                     for (int i = 0; i < catalogue.size(); i++) {
-                        if ((mostCommon.equals("high") && catalogue.get(i).getRating() > 3 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 3)) {
+                        // High = 3.75 - 5 | Average = 2.25 - 3.75 | Low = 1 - 2.25
+                        if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
                             tempCatalogue.add(catalogue.get(i));
                         }
                     }
                     catalogue = tempCatalogue;
-                } // No else bc only two options
+                } // No else bc only two options so a tie = no filter sadly
+
+                // Final section.
+                // Display list
+                System.out.print("\nThe current list of movies is ");
+                for (int i = 0; i < catalogue.size(); i++) {
+                    System.out.print(catalogue.get(i));
+                    if (i < catalogue.size() - 1 && catalogue.size() > 2) {System.out.print(", ");}
+                    if (catalogue.size() == 2 && i == 0) {System.out.print(" ");}
+                    if (i == catalogue.size() - 2) {System.out.print("and ");}
+                }
+
+                // Final input
+                System.out.print("Do you want to randomly narrow the list (y/n)?\n> ");
+                if (Character.toLowerCase(input.next().charAt(0)) == 'y') {
+                    getRandomMovies(catalogue);
+                }
             }
         }
 
-
-
         input.close();
+        System.out.println("Enjoy your movie!");
     }
 
     public static void getRandomMovies (ArrayList<Movie> list) {
@@ -172,7 +213,7 @@ public class MovieRoulette {
         int movieCount = 0;
 
         while (movieCount <= 0) {
-            System.out.print("How many movies do you want to pick?\n> ");
+            System.out.print("\nHow many movies do you want to pick?\n> ");
             movieCount = (input.hasNextInt()) ? input.nextInt() : -475267;
             if (movieCount == -475267) {
                 input.next();
@@ -182,24 +223,16 @@ public class MovieRoulette {
         input.close();
 
         if (movieCount == 1) {
-            System.out.println(Roulette.chooseOne(list) + " has been chosen.");
+            System.out.println("\n" + Roulette.chooseOne(list) + " has been chosen.");
         } else {
             Movie[] out = Roulette.chooseX(list, movieCount);
             // Very much output formatting
-            if (movieCount >= list.size()) {
-                for (int i = 0; i < list.size(); i++) {
-                    System.out.print(out[i]);
-                    if (i < list.size() - 1 && list.size() > 2) {System.out.print(", ");}
-                    if (list.size() == 2 && i == 0) {System.out.print(" ");}
-                    if (i == list.size() - 2) {System.out.print("and ");}
-                }
-            } else {
-                for (int i = 0; i < movieCount; i++) {
-                    System.out.print(out[i]);
-                    if (i < movieCount - 1 && movieCount > 2) {System.out.print(", ");}
-                    if (movieCount == 2 && i == 0) {System.out.print(" ");}
-                    if (i == movieCount - 2) {System.out.print("and ");}
-                }
+            System.out.println();
+            for (int i = 0; i < out.length; i++) {
+                System.out.print(out[i]);
+                if (i < out.length - 1 && out.length > 2) {System.out.print(", ");}
+                if (out.length == 2 && i == 0) {System.out.print(" ");}
+                if (i == out.length - 2) {System.out.print("and ");}
             }
             System.out.println(" have been chosen.");
         }

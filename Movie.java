@@ -9,10 +9,10 @@ public class Movie {
     // Constructor
     public Movie (int year) {
         // For easier testing
-        this("", year, 120, 4.5, "Hello World");
+        this("Hello world", "", year, 4.5, 120);
     }
 
-    public Movie (String genre, int year, int runtime, double rating, String title) {
+    public Movie (String title, String genre, int year, double rating, int runtime) {
         this.genre = genre;
         this.year = year;
         this.runtime = runtime;
