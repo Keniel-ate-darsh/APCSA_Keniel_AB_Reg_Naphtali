@@ -30,8 +30,8 @@ public class MovieRoulette {
         System.out.println("Welcome, Confused Party of Movie Watchers!");
 
         // Get number of people in the group
-        while (numPeople <= 0) {
-            System.out.print("How many people are in your party?\n> ");
+        while (numPeople <= 0 || numPeople > 8) {
+            System.out.print("How many people are in your party (max of 8)?\n> ");
             // If the user entered an int, all cool. Else, ignore
             numPeople = (input.hasNextInt()) ? input.nextInt() : -475267;
             if (numPeople == -475267) {
@@ -60,12 +60,15 @@ public class MovieRoulette {
             input.nextLine();
             for (int i = 0; i < numPeople; i++) {
                 boolean isValidGenre = false;
-                System.out.print("\nPerson %d: What genre do you want to watch?\n> ".formatted(i + 1));
-                String userGenre = input.nextLine();
-                for (int j = 0; j < validGenres.length; j++) {
-                    if (userGenre.toLowerCase() == validGenres[j]) {isValidGenre = true;}
+                while (!isValidGenre) {
+                    System.out.print("\nPerson %d: What genre do you want to watch (out of sci-fi, romance, comedy, fantasy, and horror)?\n> ".formatted(i + 1));
+                    String userGenre = input.nextLine();
+                    for (int j = 0; j < validGenres.length; j++) {
+                        if (userGenre.toLowerCase().equals(validGenres[j])) {isValidGenre = true;}
+                        //System.out.println(userGenre + " | " + validGenres[j] + " | " + isValidGenre);
+                    }
+                    if (isValidGenre) {genres[i] = userGenre;}
                 }
-                if (isValidGenre) {genres[i] = userGenre;}
             }
 
             // Find the most common genre
@@ -76,7 +79,8 @@ public class MovieRoulette {
                 int tempCount = 0;
                 if (!genres[i].equals(mostCommon)) {
                     for (int j = 0; j < genres.length; j++) {
-                        if (genres[i] == genres[j]) {
+                        //System.out.println(i + " " + j + " " + genres[i] + " " + genres[j]);
+                        if (genres[i].equals(genres[j])) {
                             tempCount++;
                         }
                     }
@@ -90,6 +94,7 @@ public class MovieRoulette {
                 } else {
                     continue;
                 }
+                //System.out.println(mostCommon + " " + tiedCommon + " " + count + " " + tempCount);
             }
 
             // Filter by genre
@@ -141,12 +146,14 @@ public class MovieRoulette {
                 input.nextLine();
                 for (int i = 0; i < numPeople; i++) {
                     boolean isValidRating = false;
-                    System.out.print("Person %d: What do you want the movie to be rated?\n> ".formatted(i + 1));
-                    String userRating = input.nextLine();
-                    for (int j = 0; j < validRatings.length; j++) {
-                        if (userRating.toLowerCase() == validRatings[j]) {isValidRating = true;}
+                    while (!isValidRating) {
+                        System.out.print("Person %d: What do you want the movie to be rated (out of high, average, and low)?\n> ".formatted(i + 1));
+                        String userRating = input.nextLine();
+                        for (int j = 0; j < validRatings.length; j++) {
+                            if (userRating.toLowerCase().equals(validRatings[j])) {isValidRating = true;}
+                        }
+                        if (isValidRating) {ratings[i] = userRating;}
                     }
-                    if (isValidRating) {genres[i] = userRating;}
                 }
 
                 // Find the most common rating
@@ -175,16 +182,23 @@ public class MovieRoulette {
 
                 // Filter by rating
                 tempCatalogue = new ArrayList<>();
-                if (tiedCommon.equals("")) { // Only will be true if there was a most common rating.
-                    // Code for filtering by one rating
+                if (!tiedCommon.equals("")) { // Only will be true if there were two most common ratings
+                    // If this section of code is run, the count variable will be the same for both ratings.
                     for (int i = 0; i < catalogue.size(); i++) {
-                        // High = 3.75 - 5 | Average = 2.25 - 3.75 | Low = 1 - 2.25
                         if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
                             tempCatalogue.add(catalogue.get(i));
                         }
                     }
                     catalogue = tempCatalogue;
-                } // No else bc only two options so a tie = no filter sadly
+                } else { // Only ran if there is only one most common genre
+                    // Code for filtering by one genre
+                    for (int i = 0; i < catalogue.size(); i++) {
+                        if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
+                            tempCatalogue.add(catalogue.get(i));
+                        }
+                    }
+                    catalogue = tempCatalogue;
+                }
 
                 // Final section.
                 // Display list
