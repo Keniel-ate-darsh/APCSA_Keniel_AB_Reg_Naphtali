@@ -15,19 +15,45 @@ public class MovieRoulette {
         ArrayList<Movie> catalogue = new ArrayList<>(List.of( // Parodies to avoid copyright
             new Movie("Yacht", "romance", 1997, 3.8, 194),
             new Movie("Ugly and the Small", "romance", 2003, 2.0, 73),
-            new Movie("Romeo and Julio", "romance", 2025, 2.3, 82),
+            new Movie("Romeo and Julio", "romance", 2025, 2.4, 82),
+            new Movie("The Prince Husband", "romance", 1987, 4.8, 98),
+            new Movie("Tree Genius", "romance", 1999, 3.2, 154),
+            new Movie("Normal Poor European", "romance", 1820, 1.2, 212),
             new Movie("Star Warriors", "sci-fi", 1977, 3.4, 98),
             new Movie("Project Fail Harry", "sci-fi", 2026, 2.0, 132),
             new Movie("The Array", "sci-fi", 2015, 4.3, 113),
+            new Movie("Cretaceous Land", "sci-fi", 1993, 3.9, 134),
+            new Movie("Lizard vs. Monkey", "sci-fi", 1970, 4.6, 140),
+            new Movie("A Loud Evict", "sci-fi", 2008, 1.4, 90),
             new Movie("Caves and Lizards", "fantasy", 2023, 2.2, 128),
             new Movie("Hairy the Potman", "fantasy", 2001, 3.5, 152),
             new Movie("The Avenged", "fantasy", 2013, 4.2, 90),
+            new Movie("Tenant Good", "fantasy", 2026, 5.0, 100),
+            new Movie("King of the Bracelets", "fantasy", 2007, 3.9, 212),
+            new Movie("Lesbian Space Princess", "fantasy", 2024, 1.0, 87),
             new Movie("Shout", "horror", 1996, 2.1, 87),
             new Movie("Dream before Easter", "horror", 2008, 4.0, 109),
             new Movie("Monday", "horror", 2022, 3.3, 137),
+            new Movie("I.T.", "horror", 2020, 2.8, 110),
+            new Movie("A Loud Area", "horror", 2023, 1.8, 147),
+            new Movie("The Whitening", "horror", 2022, 3.1, 97),
+            new Movie("KAR3N", "horror", 2022, 3.0, 102),
             new Movie("Green Guy", "comedy", 2001, 3.6, 124),
             new Movie("Mr. Montanus and the Holy Quail", "comedy", 1976, 4.9, 121),
-            new Movie("Livepool", "comedy", 2016, 1.3, 142)
+            new Movie("Livepool", "comedy", 2016, 1.3, 142),
+            new Movie("Slow Minute", "comedy", 1998, 2.7, 98),
+            new Movie("Skypig Night", "comedy", 1993, 3.7, 101),
+            new Movie("The Resurrector", "action", 1984, 4.1, 141),
+            new Movie("Sitting Woman", "action", 1996, 2.1, 101),
+            new Movie("Bill Candle", "action", 2014, 3.6, 101),
+            new Movie("StartGame", "action", 2024, 4.6, 185),
+            new Movie("The Rest of Them", "action", 2014, 2.8, 152),
+            new Movie("The Satanson", "action", 1972, 4.5, 175),
+            new Movie("El Increíble Huk", "action", 2008, 3.3, 112),
+            new Movie("Tarantula-man: Into the Tarantulaverse", "action", 2018, 3.6, 117),
+            new Movie("Ohio John and the Found Boat", "action", 1981, 4.2, 115),
+            new Movie("Tungsten Man", "action", 2002, 3.9, 126),
+            new Movie("The Slow and the Happy", "action", 2001, 3.4, 106)
         ));
         Scanner input = new Scanner(System.in);
 
@@ -62,13 +88,13 @@ public class MovieRoulette {
         else {
             // Collect the list of genres
             String[] genres = new String[numPeople];
-            String[] validGenres = {"sci-fi", "romance", "fantasy", "horror", "comedy"};
+            String[] validGenres = {"sci-fi", "romance", "fantasy", "horror", "comedy", "action"};
 
             input.nextLine();
             for (int i = 0; i < numPeople; i++) {
                 boolean isValidGenre = false;
                 while (!isValidGenre) { // as long as they don't enter a valid genre, it repeats.
-                    System.out.print("\nPerson %d, What genre do you want to watch (out of sci-fi, romance, comedy, fantasy, and horror)?\n> ".formatted(i + 1));
+                    System.out.print("\nPerson %d, What genre do you want to watch (out of sci-fi, romance, comedy, fantasy, action, and horror)?\n> ".formatted(i + 1));
                     String userGenre = input.nextLine();
                     for (int j = 0; j < validGenres.length; j++) {
                         if (userGenre.toLowerCase().equals(validGenres[j])) {isValidGenre = true;}
@@ -195,7 +221,7 @@ public class MovieRoulette {
                 if (!tiedCommon.equals("")) { // Only will be true if there were two most common ratings
                     // If this section of code is run, the count variable will be the same for both ratings.
                     // Since you're probably too lazy to read the whole condition, here's what it says in a nutshell.
-                    // "high" -> 3.75 to 5.0 stars; "average" -> 2.25 to 3.75 stars; "low" -> 1.0 to 2.25 stars
+                    // "high" -> 3.8 to 5.0 stars; "average" -> 2.3 to 3.7 stars; "low" -> 1.0 to 2.2 stars
                     for (int i = 0; i < catalogue.size(); i++) {
                         if ((mostCommon.equals("high") && catalogue.get(i).getRating() >= 3.75 && catalogue.get(i).getRating() <= 5) || (mostCommon.equals("low") && catalogue.get(i).getRating() >= 1 && catalogue.get(i).getRating() <= 2.25) || (mostCommon.equals("average") && catalogue.get(i).getRating() >= 2.25 && catalogue.get(i).getRating() <= 3.75)) {
                             tempCatalogue.add(catalogue.get(i));
